@@ -12,9 +12,13 @@ class Game
 
   def score
     convert_rolls_to_frames
-    @frames.each { |x|
-      @frame_score =  x.inject(:+)
-      @score += @frame_score
+    @frames.each_with_index { |frame, index|
+      @frame_score = frame.inject(:+)
+      if is_spare frame
+        score_spare @frames, index
+      else
+        @score += @frame_score
+      end
     }
     @score
   end
@@ -24,4 +28,14 @@ class Game
       @frames << @rolls.slice(x, 2)
     }
   end
+
+  def is_spare(frame)
+    frame.inject(:+) == 10
+  end
+
+  def score_spare(frames, index)
+    bonus = frames[index + 1][0]
+    @score += @frame_score + bonus
+  end
+
 end
