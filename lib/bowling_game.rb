@@ -13,7 +13,7 @@ class Game
   def score
     convert_rolls_to_frames
     @frames.each_with_index { |frame, index|
-      @frame_score = frame.inject(:+)
+      @frame_score = frame_score frame
       if is_strike frame
         score_strike @frames, index
       elsif is_spare frame
@@ -46,12 +46,12 @@ class Game
 
   def score_spare(frames, index)
     bonus = frames[index + 1][0]
-    @score += @frame_score + bonus
+    @score += frame_score(frames[index]) + bonus
   end
 
   def score_strike(frames, index)
-    bonus = frames[index + 1][0] + frames[index + 1][1]
-    @score += frames[index][0] + bonus
+    bonus = frame_score frames[index + 1]
+    @score += frame_score(frames[index]) + bonus
   end
 
   def is_strike(frame)
@@ -60,5 +60,9 @@ class Game
 
   def is_strike_roll(frame_count, roll)
     frame_count == 0 && roll == 10
+  end
+
+  def frame_score frame
+    frame.inject(:+)
   end
 end
