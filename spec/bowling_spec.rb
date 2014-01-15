@@ -27,6 +27,11 @@ describe Game do
       16.times { subject.roll(0) }
       expect(subject.score).to eq 24
     end
+    
+   xit "A perfect game (12 strikes) scores 300." do
+      12.times { subject.roll(10) }
+      expect(subject.score).to eq 300
+    end
   end
 
 end
